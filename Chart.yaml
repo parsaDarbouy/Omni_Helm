@@ -1,0 +1,5 @@
+apiVersion: v2
+name: omni-helm
+description: A Helm chart for deploying a custom image with three replicas
+version: 0.1.0
+type: application

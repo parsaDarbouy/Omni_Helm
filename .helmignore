@@ -1,0 +1,5 @@
+# Patterns to ignore
+*.swp
+*.bak
+.git
+.gitignore

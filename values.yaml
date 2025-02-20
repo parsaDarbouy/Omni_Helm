@@ -1,0 +1,11 @@
+# Default values for my-custom-chart
+replicaCount: 3
+
+image:
+  repository: nginx  # Default image URL (can be overridden)
+  tag: "latest"      # Default tag (can be overridden)
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
