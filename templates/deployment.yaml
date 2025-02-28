@@ -18,6 +18,13 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:     
+        {{- if .Values.env }}     
+          {{- range $name, $value := .Values.env }}
+          - name: "{{ $name }}"
+            value: "{{ $value }}"
+          {{- end }}
+        {{- end }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.image.containerPort }}
           protocol: TCP
