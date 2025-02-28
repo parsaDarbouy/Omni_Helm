@@ -1,11 +1,19 @@
 # Default values for my-custom-chart
-replicaCount: 3
+replicaCount: 1
 
 image:
-  repository: nginx  # Default image URL (can be overridden)
+  repository: "docker.io/redis"  # Default image URL (can be overridden)
   tag: "latest"      # Default tag (can be overridden)
   pullPolicy: IfNotPresent
+  containerPort: 6379
 
 service:
   type: ClusterIP
-  port: 80
+  port: 6379
+  targetPort: 6379
+
+# If you want to set any environment variables, do so here.
+# Otherwise, leave this commented out.
+# env:          
+#  - name: "GET_HOSTS_FROM"
+#    value: "dns"
