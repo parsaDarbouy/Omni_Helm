@@ -1,16 +1,29 @@
 # Default values for my-custom-chart
-replicaCount: 1
+replicaCount: 2
 
 image:
-  repository: "docker.io/redis"  # Default image URL (can be overridden)
-  tag: "latest"      # Default tag (can be overridden)
+  repository: "registry.k8s.io/nginx-slim"  # Default image URL (can be overridden)
+  tag: "0.21"      # Default tag (can be overridden)
   pullPolicy: IfNotPresent
-  containerPort: 6379
+  containerPort: 80
+
+persistence:
+  volumeName: www
+  mountPath: /usr/share/nginx/html
+  size: 1Gi
 
 service:
-  type: ClusterIP
-  port: 6379
-  targetPort: 6379
+  enable: true  # Enable or disable the service
+  # type: None
+  port: 80
+  clusterIP: None
+  # targetPort: 80
+
+statefulset:
+  enable: false  # Enable or disable the statefulset
+
+deployment:
+  enable: true  # Enable or disable the deployment
 
 # If you want to set any environment variables, do so here.
 # Otherwise, leave this commented out.
