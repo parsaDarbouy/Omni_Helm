@@ -1,22 +1,20 @@
+{{- if .Values.statefulset.enable }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-statefulset
   labels:
-    app: {{ .Chart.Name }}
-    release: {{ .Release.Name }}
+    app: {{ .Release.Name }}
 spec:
-  serviceName: {{ .Release.Name }}-headless
+  serviceName: {{ .Release.Name }}-service
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
-      release: {{ .Release.Name }}
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
-        release: {{ .Release.Name }}
+        app: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
@@ -25,8 +23,8 @@ spec:
           ports:
             - containerPort: {{ .Values.service.port }}
           volumeMounts:
-            - name: data
-              mountPath: /data
+            - name: {{ .Values.persistence.volumeName | default "data" }}
+              mountPath: {{ .Values.persistence.mountPath | default "/data" }}     
           env:
           {{- if .Values.env }}
             {{- range $name, $value := .Values.env }}
@@ -36,9 +34,10 @@ spec:
           {{- end }}
   volumeClaimTemplates:
     - metadata:
-        name: data
+        name: {{ .Values.persistence.volumeName | default "data" }}
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
             storage: {{ .Values.persistence.size }}
+{{- end }}
