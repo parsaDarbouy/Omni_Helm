@@ -1,3 +1,4 @@
+{{- if .Values.service.enable }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -5,12 +6,15 @@ metadata:
   labels:
     app: {{ .Release.Name }}
 spec:
-  type: {{ .Values.service.type }}
+  {{- if .Values.service.type }}
+  type: {{ .Values.service.type }} # Set the service type if provided
+  {{- end }}
+  {{- if .Values.service.clusterIP }}
+  clusterIP: {{ .Values.service.clusterIP }} # Set the clusterIP if provided
+  {{- end }}
   ports:
-  - port: {{ .Values.service.port }}
-    {{- if .Values.service.targetPort }}
-    targetPort: {{ .Values.service.targetPort }}
-    {{- end }}
-    protocol: TCP
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort | default .Values.service.port }}
   selector:
     app: {{ .Release.Name }}
+{{- end }}
